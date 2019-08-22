@@ -1,8 +1,10 @@
-package com.ramitsuri.depressiontracker;
+package com.ramitsuri.depressiontracker.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.ramitsuri.depressiontracker.R;
 
 public class MainActivity extends AppCompatActivity {
 
