@@ -5,6 +5,7 @@ import android.app.Application;
 import com.ramitsuri.depressiontracker.data.DepressionTrackerDatabase;
 import com.ramitsuri.depressiontracker.data.DummyData;
 import com.ramitsuri.depressiontracker.data.repository.QuestionRepository;
+import com.ramitsuri.depressiontracker.data.repository.SheetRepository;
 import com.ramitsuri.depressiontracker.logging.ReleaseTree;
 
 import timber.log.Timber;
@@ -12,6 +13,8 @@ import timber.log.Timber;
 public class MainApplication extends Application {
 
     private QuestionRepository mQuestionRepository;
+
+    private SheetRepository mSheetRepository;
 
     private static MainApplication sInstance;
 
@@ -41,7 +44,18 @@ public class MainApplication extends Application {
         DepressionTrackerDatabase database = DepressionTrackerDatabase.getInstance();
 
         mQuestionRepository = new QuestionRepository(appExecutors, database);
+        mSheetRepository = new SheetRepository(appExecutors);
+
+        // TODO debug
         mQuestionRepository.deleteAll();
         mQuestionRepository.insertQuestions(DummyData.getQuestions());
+    }
+
+    public QuestionRepository getQuestionRepository() {
+        return mQuestionRepository;
+    }
+
+    public SheetRepository getSheetRepository() {
+        return mSheetRepository;
     }
 }

@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">DepressionTracker</string>
+
+    <string name="question1_text">"Little interest or pleasure in doing things"</string>
+    <string name="question2_text">"Down, depressed, or hopeless"</string>
+    <string name="question3_text">"Trouble sleeping or sleeping too much"</string>
+    <string name="question4_text">"Tired or little energy"</string>
+    <string name="question5_text">"Poor appetite or overeating"</string>
+    <string name="question6_text">"Feeling bad about yourself"</string>
+    <string name="question7_text">"Trouble concentrating"</string>
+    <string name="question8_text">"Noticeably moving or speaking slowly or being fidgety or restless"</string>
+    <string name="question9_text">"Self-harm thoughts"</string>
+    <string name="question10_text">"Feeling nervous, anxious, or on edge"</string>
+    <string name="question11_text">"Worrying too much about different things"</string>
+    <string name="question12_text">"Not being able to stop or control worrying"</string>
+    <string name="question13_text">"Trouble relaxing"</string>
+    <string name="question14_text">"Being so restless that it's hard to sit still"</string>
+    <string name="question15_text">"Becoming easily annoyed or irritable"</string>
+    <string name="question16_text">"Feeling afraid as if something awful might happen"</string>
 </resources>
