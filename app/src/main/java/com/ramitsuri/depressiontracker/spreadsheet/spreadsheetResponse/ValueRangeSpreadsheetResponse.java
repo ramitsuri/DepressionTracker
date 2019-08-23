@@ -1,0 +1,15 @@
+package com.ramitsuri.depressiontracker.spreadsheet.spreadsheetResponse;
+
+import com.google.api.services.sheets.v4.model.ValueRange;
+
+public class ValueRangeSpreadsheetResponse extends BaseSpreadsheetResponse {
+    private ValueRange mValueRange;
+
+    public ValueRange getValueRange() {
+        return mValueRange;
+    }
+
+    public void setValueRange(ValueRange valueRange) {
+        mValueRange = valueRange;
+    }
+}
