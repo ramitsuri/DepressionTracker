@@ -5,11 +5,10 @@ import android.content.Context;
 
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.ramitsuri.depressiontracker.AppExecutors;
-import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.InsertConsumerResponse;
-import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.SheetMetadata;
 import com.ramitsuri.depressiontracker.spreadsheet.SheetsProcessor;
 import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.EntitiesConsumerResponse;
 import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.RangeConsumerResponse;
+import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.SheetMetadata;
 import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.SheetsMetadataConsumerResponse;
 import com.ramitsuri.depressiontracker.spreadsheet.intdef.Dimension;
 import com.ramitsuri.depressiontracker.spreadsheet.spreadsheetResponse.BaseSpreadsheetResponse;
@@ -113,7 +112,6 @@ public class SheetRepository {
         });
         return responseLiveData;
     }*/
-
     private SheetsMetadataConsumerResponse getSheetsMetadataResponse() {
         SheetsMetadataConsumerResponse consumerResponse = new SheetsMetadataConsumerResponse();
         try {
