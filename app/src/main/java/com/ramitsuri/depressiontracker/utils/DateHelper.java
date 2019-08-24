@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class DateHelper {
-    private static final String FORMAT_FRIENDLY = "MMM dd";
+    private static final String FORMAT_FRIENDLY = "MMM dd, YYYY";
     private static final long MILLI_SECONDS_IN_DAY = 86400000;
     private static final long SHEETS_DATE_OFFSET = 25569;
 

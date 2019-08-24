@@ -40,7 +40,7 @@ public class DummyData {
     public static long[] getDates() {
         TimeZone timeZone = TimeZone.getDefault();
 
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance(timeZone);
         calendar.set(Calendar.HOUR, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
