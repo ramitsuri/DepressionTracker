@@ -45,6 +45,7 @@
         android:id="@+id/list_answers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:checkedChip="@id/answer_no"
         app:layout_constraintBottom_toBottomOf="@id/btn_next"
         app:layout_constraintEnd_toStartOf="@id/btn_next"
         app:layout_constraintStart_toEndOf="@id/btn_prev"
@@ -52,14 +53,20 @@
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/answer_yes"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:text="@string/yes"
             android:textAllCaps="true" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/answer_no"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:text="@string/no"
             android:textAllCaps="true" />
 
@@ -71,32 +78,45 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_extra_extra_large"
         android:orientation="vertical"
+        app:checkedChip="@id/difficulty_not_at_all"
         app:layout_constraintEnd_toStartOf="@id/btn_next"
         app:layout_constraintStart_toEndOf="@id/btn_prev"
         app:layout_constraintTop_toBottomOf="@id/list_answers"
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/difficulty_not_at_all"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:text="@string/difficulty_not_at_all"
             android:textAllCaps="true" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/difficulty_somewhat"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:text="@string/difficulty_somewhat"
             android:textAllCaps="true" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/difficulty_very"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:text="@string/difficulty_very"
             android:textAllCaps="true" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/difficulty_extremely"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checkable="true"
             android:text="@string/difficulty_extremely"
             android:textAllCaps="true" />
 

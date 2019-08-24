@@ -63,8 +63,32 @@ public class AddDataFragment extends BaseFragment implements View.OnClickListene
         mTextQuestion = view.findViewById(R.id.text_question);
 
         mListAnswers = view.findViewById(R.id.list_answers);
+        mListAnswers.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+                if (checkedId == R.id.answer_no) {
+                    Timber.i("no");
+                } else if (checkedId == R.id.answer_yes) {
+                    Timber.i("yes");
+                }
+            }
+        });
 
         mListDifficulties = view.findViewById(R.id.list_difficulties);
+        mListDifficulties.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+                if (checkedId == R.id.difficulty_not_at_all) {
+                    Timber.i("not at all");
+                } else if (checkedId == R.id.difficulty_somewhat) {
+                    Timber.i("somewhat");
+                } else if (checkedId == R.id.difficulty_very) {
+                    Timber.i("very");
+                } else if (checkedId == R.id.difficulty_extremely) {
+                    Timber.i("extremely");
+                }
+            }
+        });
     }
 
     private void updateData() {
