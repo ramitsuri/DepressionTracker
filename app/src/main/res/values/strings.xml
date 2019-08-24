@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">DepressionTracker</string>
     <string name="history">History</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <!-- Questions -->
     <string name="question1_text">"Little interest or pleasure in doing things"</string>
@@ -20,8 +22,11 @@
     <string name="question15_text">"Becoming easily annoyed or irritable"</string>
     <string name="question16_text">"Feeling afraid as if something awful might happen"</string>
 
-    <!-- Menu -->
-    <string name="action_settings">Settings</string>
+    <!-- Difficulty -->
+    <string name="difficulty_not_at_all">Not at all</string>
+    <string name="difficulty_somewhat">Somewhat</string>
+    <string name="difficulty_very">Very</string>
+    <string name="difficulty_extremely">Extremely</string>
 
     <!-- Settings -->
     <string name="settings">Settings</string>
@@ -37,4 +42,8 @@
     <string name="settings_summary_sheet_id">Current sheet ID</string>
     <string name="settings_summary_auto_backup">Auto backup new expenses</string>
     <string name="settings_summary_theme">Theme</string>
+
+    <!-- Add Data -->
+    <string name="content_description_button_previous">button previous</string>
+    <string name="content_description_button_next">button next</string>
 </resources>

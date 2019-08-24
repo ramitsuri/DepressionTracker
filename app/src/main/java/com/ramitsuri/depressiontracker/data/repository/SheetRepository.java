@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.ramitsuri.depressiontracker.AppExecutors;
+import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.InsertConsumerResponse;
 import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.SheetMetadata;
 import com.ramitsuri.depressiontracker.spreadsheet.SheetsProcessor;
 import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.EntitiesConsumerResponse;
@@ -92,6 +93,26 @@ public class SheetRepository {
         });
         return responseLiveData;
     }
+
+    /**
+     * Method that runs in a background thread and prepares range data for a given range
+     * in a spreadsheet
+     * <p>
+     * EX: "Aug19!A19:F"
+     */
+    /*public LiveData<InsertConsumerResponse> insertRange() {
+        final MutableLiveData<InsertConsumerResponse> responseLiveData =
+                new MutableLiveData<>();
+        mExecutors.networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                String range = "Aug19!A19:F";
+                InsertConsumerResponse response = getInsertRangeResponse(range);
+                responseLiveData.postValue(response);
+            }
+        });
+        return responseLiveData;
+    }*/
 
     private SheetsMetadataConsumerResponse getSheetsMetadataResponse() {
         SheetsMetadataConsumerResponse consumerResponse = new SheetsMetadataConsumerResponse();

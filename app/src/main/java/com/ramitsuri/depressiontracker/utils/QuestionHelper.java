@@ -1,6 +1,7 @@
 package com.ramitsuri.depressiontracker.utils;
 
 import android.content.Context;
+import android.util.SparseArray;
 
 import com.ramitsuri.depressiontracker.R;
 import com.ramitsuri.depressiontracker.entities.Question;
@@ -8,13 +9,10 @@ import com.ramitsuri.depressiontracker.intdef.AnswerType;
 import com.ramitsuri.depressiontracker.intdef.DifficultyType;
 import com.ramitsuri.depressiontracker.intdef.QuestionType;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class QuestionHelper {
 
-    public static List<Question> getBaseQuestions(Context context) {
-        List<Question> questions = new ArrayList<>();
+    public static SparseArray<Question> getBaseQuestions(Context context) {
+        SparseArray<Question> questions = new SparseArray<>();
 
         Question question;
 
@@ -25,7 +23,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(1);
@@ -34,7 +32,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(2);
@@ -43,7 +41,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(3);
@@ -52,7 +50,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(4);
@@ -61,7 +59,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(5);
@@ -70,7 +68,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(6);
@@ -79,7 +77,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(7);
@@ -88,7 +86,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(8);
@@ -97,7 +95,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(9);
@@ -106,7 +104,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(10);
@@ -115,7 +113,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(11);
@@ -124,7 +122,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(12);
@@ -133,7 +131,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(13);
@@ -142,7 +140,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(14);
@@ -151,7 +149,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         question = new Question();
         question.setQuestionId(15);
@@ -160,7 +158,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        questions.put(question.getQuestionId(), question);
 
         return questions;
     }

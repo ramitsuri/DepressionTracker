@@ -4,14 +4,36 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.android.material.chip.ChipGroup;
 import com.ramitsuri.depressiontracker.R;
+import com.ramitsuri.depressiontracker.entities.Question;
+import com.ramitsuri.depressiontracker.viewModel.AddDataViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import timber.log.Timber;
 
-public class AddDataFragment extends BaseFragment {
+public class AddDataFragment extends BaseFragment implements View.OnClickListener {
+
+    private ImageView mBtnPrev, mBtnNext;
+    private TextView mTextQuestion;
+    private ChipGroup mListAnswers, mListDifficulties;
+
+    private AddDataViewModel mViewModel;
+
     public AddDataFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mViewModel = ViewModelProviders.of(this).get(AddDataViewModel.class);
     }
 
     @Override
@@ -22,25 +44,78 @@ public class AddDataFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        hideActionBar();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        showActionBar();
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*mViewModel = ViewModelProviders.of(this).get(AddExpenseViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(AddDataViewModel.class);
 
         setupViews(view);
-
-        setupRecyclerViews(view);*/
+        mViewModel.getCurrentIndex().observe(getViewLifecycleOwner(), mIndexObserver);
     }
+
+    private void setupViews(View view) {
+        mBtnPrev = view.findViewById(R.id.btn_prev);
+        mBtnPrev.setOnClickListener(this);
+
+        mBtnNext = view.findViewById(R.id.btn_next);
+        mBtnNext.setOnClickListener(this);
+
+        mTextQuestion = view.findViewById(R.id.text_question);
+
+        mListAnswers = view.findViewById(R.id.list_answers);
+
+        mListDifficulties = view.findViewById(R.id.list_difficulties);
+    }
+
+    private void updateData() {
+        Question question = mViewModel.getSelectedQuestion();
+        if (question != null && mTextQuestion != null) {
+            mTextQuestion.setText(question.getText());
+        }
+    }
+
+    private void updateViews(Integer index) {
+        if (mBtnPrev == null) {
+            return;
+        }
+        if (index != 0) {
+            mBtnPrev.setEnabled(true);
+        } else {
+            mBtnPrev.setEnabled(false);
+        }
+        if (mBtnNext == null) {
+            return;
+        }
+        if (index != mViewModel.getQuestions().size() - 1) {
+            mBtnNext.setEnabled(true);
+        } else {
+            mBtnNext.setEnabled(false);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == mBtnNext) {
+            handleNextClicked();
+        } else if (view == mBtnPrev) {
+            handlePreviousClicked();
+        }
+    }
+
+    private void handleNextClicked() {
+        mViewModel.selectNextQuestion();
+    }
+
+    private void handlePreviousClicked() {
+        mViewModel.selectPreviousQuestion();
+    }
+
+    private Observer<Integer> mIndexObserver = new Observer<Integer>() {
+        @Override
+        public void onChanged(Integer index) {
+            Timber.i("Refreshing Question -> index is " + index);
+            updateViews(index);
+            updateData();
+        }
+    };
 }
