@@ -27,7 +27,7 @@ public interface QuestionDao {
     void insert(Question question);
 
     @Insert
-    void insertAll(List<Question> questions);
+    List<Long> insertAll(List<Question> questions);
 
     @Query("UPDATE question SET is_synced = 1 WHERE is_synced = 0")
     void updateUnsynced();

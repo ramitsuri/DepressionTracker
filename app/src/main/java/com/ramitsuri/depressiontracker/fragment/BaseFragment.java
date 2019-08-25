@@ -38,6 +38,15 @@ public class BaseFragment extends Fragment {
         }
     }
 
+    void goUp(){
+        Activity activity = getActivity();
+        if (activity != null) {
+            ((AppCompatActivity)activity).onSupportNavigateUp();
+        } else {
+            Timber.i("handleCloseFragmentClicked() -> Activity is null");
+        }
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

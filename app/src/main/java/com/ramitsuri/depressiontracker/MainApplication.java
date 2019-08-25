@@ -50,8 +50,8 @@ public class MainApplication extends Application {
         mQuestionRepository = new QuestionRepository(appExecutors, database);
 
         // TODO debug
-        mQuestionRepository.deleteAll();
-        mQuestionRepository.insertQuestions(DummyData.getQuestions());
+      /*  mQuestionRepository.deleteAll();
+        mQuestionRepository.insertQuestions(DummyData.getQuestions());*/
     }
 
     public void initSheetRepo(@NonNull Account account,

@@ -4,9 +4,9 @@ import com.ramitsuri.depressiontracker.AppExecutors;
 import com.ramitsuri.depressiontracker.data.DepressionTrackerDatabase;
 import com.ramitsuri.depressiontracker.entities.Question;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -74,13 +74,16 @@ public class QuestionRepository {
         });
     }
 
-    public void insertQuestions(final List<Question> questions) {
+    public LiveData<Boolean> insertQuestions(@NonNull final List<Question> questions) {
+        final MutableLiveData<Boolean> success = new MutableLiveData<>();
         mExecutors.diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                mDatabase.questionDao().insertAll(questions);
+                List<Long> insertedQuestions = mDatabase.questionDao().insertAll(questions);
+                success.postValue(insertedQuestions.size() > 0);
             }
         });
+        return success;
     }
 
     public void updateUnsynced() {
