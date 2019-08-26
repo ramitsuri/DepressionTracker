@@ -34,11 +34,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_extra_extra_large"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_small"
         android:gravity="center"
-        android:textSize="@dimen/text_extra_extra_extra_large"
+        android:textSize="@dimen/text_extra_extra_large"
         app:layout_constraintBottom_toTopOf="@id/list_answers"
-        app:layout_constraintEnd_toStartOf="@id/btn_next"
-        app:layout_constraintStart_toEndOf="@id/btn_prev"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/question1_text" />
 
     <androidx.recyclerview.widget.RecyclerView
