@@ -210,7 +210,7 @@ public class SheetRepository {
         return consumerResponse;
     }
 
-    private InsertConsumerResponse getInsertRangeResponse(@NonNull List<Question> questions,
+    public InsertConsumerResponse getInsertRangeResponse(@NonNull List<Question> questions,
             @NonNull String sheetId) {
         InsertConsumerResponse consumerResponse = new InsertConsumerResponse();
         try {

@@ -3,7 +3,6 @@ package com.ramitsuri.depressiontracker.fragment;
 import android.accounts.Account;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,24 +16,25 @@ import com.ramitsuri.depressiontracker.MainApplication;
 import com.ramitsuri.depressiontracker.R;
 import com.ramitsuri.depressiontracker.adapter.HistoryAdapter;
 import com.ramitsuri.depressiontracker.constants.Constants;
-import com.ramitsuri.depressiontracker.entities.Question;
 import com.ramitsuri.depressiontracker.google.AccountManager;
 import com.ramitsuri.depressiontracker.google.SignInResponse;
-import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.InsertConsumerResponse;
 import com.ramitsuri.depressiontracker.utils.PrefHelper;
 import com.ramitsuri.depressiontracker.viewModel.HistoryViewModel;
+import com.ramitsuri.depressiontracker.work.BackupWorker;
 
-import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 import timber.log.Timber;
 
 public class HistoryFragment extends BaseFragment {
@@ -112,10 +112,7 @@ public class HistoryFragment extends BaseFragment {
         SignInResponse response =
                 accountManager.prepareSignIn(MainApplication.getInstance(), Constants.SCOPES);
         if (response.getGoogleSignInAccount() != null) {
-            String spreadsheetId =
-                    PrefHelper.get(getString(R.string.settings_key_spreadsheet_id), null);
-            String sheetId = PrefHelper.get(getString(R.string.settings_key_sheet_id), null);
-            initiateBackup(response.getGoogleSignInAccount().getAccount(), spreadsheetId, sheetId);
+            initiateBackup(response.getGoogleSignInAccount().getAccount());
         } else if (response.getGoogleSignInIntent() != null) {
             // request account access
             startActivityForResult(response.getGoogleSignInIntent(),
@@ -123,42 +120,38 @@ public class HistoryFragment extends BaseFragment {
         }
     }
 
-    public void initiateBackup(Account account, final String spreadsheetId, final String sheetId) {
-        if (!TextUtils.isEmpty(spreadsheetId)) {
-            MainApplication.getInstance()
-                    .initSheetRepo(account, spreadsheetId, Arrays.asList(Constants.SCOPES));
-            if (!TextUtils.isEmpty(sheetId)) {
-                getUnsyncedQuestions(sheetId);
-            }
-        }
-    }
+    private void initiateBackup(Account account) {
+        String spreadsheetId =
+                PrefHelper.get(getString(R.string.settings_key_spreadsheet_id), null);
+        String sheetId = PrefHelper.get(getString(R.string.settings_key_sheet_id), null);
+        Data.Builder builder = new Data.Builder();
+        builder.putString(Constants.Work.APP_NAME, getString(R.string.app_name));
+        builder.putString(Constants.Work.ACCOUNT_NAME, account.name);
+        builder.putString(Constants.Work.ACCOUNT_TYPE, account.type);
+        builder.putString(Constants.Work.SPREADSHEET_ID, spreadsheetId);
+        builder.putString(Constants.Work.SHEET_ID, sheetId);
 
-    private void getUnsyncedQuestions(final String sheetId) {
-        mViewModel.getQuestionRepository().getAllUnsynced().observe(
-                getViewLifecycleOwner(), new Observer<List<Question>>() {
+        OneTimeWorkRequest backupRequest = new OneTimeWorkRequest.Builder(BackupWorker.class)
+                .addTag(Constants.TAG_ONE_TIME_BACKUP)
+                .setInputData(builder.build())
+                .build();
+        WorkManager.getInstance(MainApplication.getInstance()).enqueue(backupRequest);
+        WorkManager.getInstance(MainApplication.getInstance())
+                .getWorkInfoByIdLiveData(backupRequest.getId()).observe(getViewLifecycleOwner(),
+                new Observer<WorkInfo>() {
                     @Override
-                    public void onChanged(List<Question> questions) {
-                        backup(questions, sheetId);
+                    public void onChanged(WorkInfo workInfo) {
+                        if (workInfo != null) {
+                            if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
+                                Timber.i("Backup Success");
+                            } else if (workInfo.getState() == WorkInfo.State.RUNNING) {
+                                Timber.i("Backup Running");
+                            } else if (workInfo.getState() == WorkInfo.State.FAILED) {
+                                Timber.i("Backup Fail");
+                            }
+                        }
                     }
                 });
-    }
-
-    private void backup(List<Question> questions, final String sheetId) {
-        LiveData<InsertConsumerResponse> responseLiveData =
-                MainApplication.getInstance().getSheetRepository().insertRange(questions, sheetId);
-        responseLiveData.observe(getViewLifecycleOwner(), new Observer<InsertConsumerResponse>() {
-            @Override
-            public void onChanged(InsertConsumerResponse insertConsumerResponse) {
-                Timber.i(String.valueOf(insertConsumerResponse.isSuccessful()));
-                if (insertConsumerResponse.isSuccessful()) {
-                    deleteBackedUp();
-                }
-            }
-        });
-    }
-
-    private void deleteBackedUp() {
-        mViewModel.getQuestionRepository().deleteAll();
     }
 
     @Override
@@ -168,10 +161,7 @@ public class HistoryFragment extends BaseFragment {
             Task<GoogleSignInAccount> getAccountTask =
                     GoogleSignIn.getSignedInAccountFromIntent(data);
             if (getAccountTask.isSuccessful() && getAccountTask.getResult() != null) {
-                String spreadsheetId =
-                        PrefHelper.get(getString(R.string.settings_key_spreadsheet_id), null);
-                String sheetId = PrefHelper.get(getString(R.string.settings_key_sheet_id), null);
-                initiateBackup(getAccountTask.getResult().getAccount(), spreadsheetId, sheetId);
+                initiateBackup(getAccountTask.getResult().getAccount());
             } else {
                 Timber.i("Sign-in failed.");
             }
