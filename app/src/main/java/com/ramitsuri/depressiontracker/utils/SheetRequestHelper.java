@@ -79,9 +79,9 @@ public class SheetRequestHelper {
         StringBuilder sb = new StringBuilder();
 
         if (question.getAnswerType() == AnswerType.NO) {
-            sb.append("NO");
+            sb.append("No");
         } else {
-            sb.append("YES, ");
+            sb.append("Yes, ");
             switch (question.getDifficultyType()) {
                 case DifficultyType.NA:
                     sb.append("NA");

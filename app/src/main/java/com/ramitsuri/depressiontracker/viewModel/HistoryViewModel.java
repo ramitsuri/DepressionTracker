@@ -24,4 +24,8 @@ public class HistoryViewModel extends ViewModel {
     public LiveData<List<Long>> getDates() {
         return mDates;
     }
+
+    public QuestionRepository getQuestionRepository() {
+        return mQuestionRepository;
+    }
 }

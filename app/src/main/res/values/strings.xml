@@ -3,11 +3,12 @@
     <string name="history">History</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="backup_now">Backup Now</string>
 
     <!-- Questions -->
-    <string name="question1_text">"Little interest or pleasure in doing things"</string>
-    <string name="question2_text">"Down, depressed, or hopeless"</string>
-    <string name="question3_text">"Trouble sleeping or sleeping too much"</string>
+    <string name="question1_text">"Little interest or pleasure in doing things, withdrawn"</string>
+    <string name="question2_text">"Down, depressed, or hopeless/ tightness/heaviness in chest"</string>
+    <string name="question3_text">"Trouble sleeping or sleeping too much, hard to get out of bed"</string>
     <string name="question4_text">"Tired or little energy"</string>
     <string name="question5_text">"Poor appetite or overeating"</string>
     <string name="question6_text">"Feeling bad about yourself"</string>

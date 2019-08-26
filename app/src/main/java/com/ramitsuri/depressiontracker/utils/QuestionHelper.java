@@ -102,7 +102,7 @@ public class QuestionHelper {
         question = new Question();
         question.setQuestionId(9);
         question.setText(context.getString(R.string.question10_text));
-        question.setQuestionType(QuestionType.DEPRESSION);
+        question.setQuestionType(QuestionType.ANXIETY);
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
@@ -111,7 +111,7 @@ public class QuestionHelper {
         question = new Question();
         question.setQuestionId(10);
         question.setText(context.getString(R.string.question11_text));
-        question.setQuestionType(QuestionType.DEPRESSION);
+        question.setQuestionType(QuestionType.ANXIETY);
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
@@ -120,7 +120,7 @@ public class QuestionHelper {
         question = new Question();
         question.setQuestionId(11);
         question.setText(context.getString(R.string.question12_text));
-        question.setQuestionType(QuestionType.DEPRESSION);
+        question.setQuestionType(QuestionType.ANXIETY);
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
@@ -129,7 +129,7 @@ public class QuestionHelper {
         question = new Question();
         question.setQuestionId(12);
         question.setText(context.getString(R.string.question13_text));
-        question.setQuestionType(QuestionType.DEPRESSION);
+        question.setQuestionType(QuestionType.ANXIETY);
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
@@ -138,7 +138,7 @@ public class QuestionHelper {
         question = new Question();
         question.setQuestionId(13);
         question.setText(context.getString(R.string.question14_text));
-        question.setQuestionType(QuestionType.DEPRESSION);
+        question.setQuestionType(QuestionType.ANXIETY);
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
@@ -147,7 +147,7 @@ public class QuestionHelper {
         question = new Question();
         question.setQuestionId(14);
         question.setText(context.getString(R.string.question15_text));
-        question.setQuestionType(QuestionType.DEPRESSION);
+        question.setQuestionType(QuestionType.ANXIETY);
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
@@ -156,7 +156,7 @@ public class QuestionHelper {
         question = new Question();
         question.setQuestionId(15);
         question.setText(context.getString(R.string.question16_text));
-        question.setQuestionType(QuestionType.DEPRESSION);
+        question.setQuestionType(QuestionType.ANXIETY);
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
