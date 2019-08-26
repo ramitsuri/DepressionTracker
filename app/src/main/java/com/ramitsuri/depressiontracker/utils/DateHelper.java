@@ -13,8 +13,8 @@ public class DateHelper {
         return format.format(date);
     }
 
-    public static long toSheetsDate(long date) {
-        return date / MILLI_SECONDS_IN_DAY + SHEETS_DATE_OFFSET;
+    public static double toSheetsDate(long date) {
+        return (double)date / MILLI_SECONDS_IN_DAY + SHEETS_DATE_OFFSET;
     }
 
     public static long fromSheetsDate(long sheetsDate) {

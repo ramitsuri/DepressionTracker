@@ -109,8 +109,7 @@ public class SheetsProcessor {
     /**
      * Performs a "batchUpdate" request on a given Spreadsheet
      */
-    public BaseSpreadsheetResponse updateSheet(@NonNull String sheetId,
-            @NonNull BatchUpdateSpreadsheetRequest requestBody)
+    public BaseSpreadsheetResponse updateSheet(@NonNull BatchUpdateSpreadsheetRequest requestBody)
             throws IOException {
         // Build Service
         Sheets service = buildSheetsService(mContext, mAppName, mAccount, mScopes);

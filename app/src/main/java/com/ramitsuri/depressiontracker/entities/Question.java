@@ -70,19 +70,21 @@ public class Question {
         mQuestionType = questionType;
     }
 
+    @AnswerType
     public int getAnswerType() {
         return mAnswerType;
     }
 
-    public void setAnswerType(int answerType) {
+    public void setAnswerType(@AnswerType int answerType) {
         mAnswerType = answerType;
     }
 
+    @DifficultyType
     public int getDifficultyType() {
         return mDifficultyType;
     }
 
-    public void setDifficultyType(int difficultyType) {
+    public void setDifficultyType(@DifficultyType int difficultyType) {
         mDifficultyType = difficultyType;
     }
 

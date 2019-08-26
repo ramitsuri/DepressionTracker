@@ -3,10 +3,13 @@ package com.ramitsuri.depressiontracker.data.repository;
 import android.accounts.Account;
 import android.content.Context;
 
+import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest;
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.ramitsuri.depressiontracker.AppExecutors;
+import com.ramitsuri.depressiontracker.entities.Question;
 import com.ramitsuri.depressiontracker.spreadsheet.SheetsProcessor;
 import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.EntitiesConsumerResponse;
+import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.InsertConsumerResponse;
 import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.RangeConsumerResponse;
 import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.SheetMetadata;
 import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.SheetsMetadataConsumerResponse;
@@ -14,6 +17,7 @@ import com.ramitsuri.depressiontracker.spreadsheet.intdef.Dimension;
 import com.ramitsuri.depressiontracker.spreadsheet.spreadsheetResponse.BaseSpreadsheetResponse;
 import com.ramitsuri.depressiontracker.spreadsheet.spreadsheetResponse.SpreadsheetSpreadsheetResponse;
 import com.ramitsuri.depressiontracker.spreadsheet.spreadsheetResponse.ValueRangeSpreadsheetResponse;
+import com.ramitsuri.depressiontracker.utils.SheetRequestHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -99,19 +103,20 @@ public class SheetRepository {
      * <p>
      * EX: "Aug19!A19:F"
      */
-    /*public LiveData<InsertConsumerResponse> insertRange() {
+    public LiveData<InsertConsumerResponse> insertRange(@NonNull final List<Question> questions,
+            @NonNull final String sheetId) {
         final MutableLiveData<InsertConsumerResponse> responseLiveData =
                 new MutableLiveData<>();
         mExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
-                String range = "Aug19!A19:F";
-                InsertConsumerResponse response = getInsertRangeResponse(range);
+                InsertConsumerResponse response = getInsertRangeResponse(questions, sheetId);
                 responseLiveData.postValue(response);
             }
         });
         return responseLiveData;
-    }*/
+    }
+
     private SheetsMetadataConsumerResponse getSheetsMetadataResponse() {
         SheetsMetadataConsumerResponse consumerResponse = new SheetsMetadataConsumerResponse();
         try {
@@ -200,6 +205,30 @@ public class SheetRepository {
             consumerResponse.setException(e);
         } catch (Exception e) {
             Timber.e(e);
+            consumerResponse.setException(e);
+        }
+        return consumerResponse;
+    }
+
+    private InsertConsumerResponse getInsertRangeResponse(@NonNull List<Question> questions,
+            @NonNull String sheetId) {
+        InsertConsumerResponse consumerResponse = new InsertConsumerResponse();
+        try {
+            BatchUpdateSpreadsheetRequest requestBody =
+                    SheetRequestHelper.getUpdateRequestBody(questions, sheetId);
+            if (requestBody != null) {
+                mSheetsProcessor.updateSheet(requestBody);
+                consumerResponse.setSuccessful(true);
+            } else {
+                consumerResponse.setSuccessful(false);
+            }
+        } catch (IOException e) {
+            Timber.e(e);
+            consumerResponse.setSuccessful(false);
+            consumerResponse.setException(e);
+        } catch (Exception e) {
+            Timber.e(e);
+            consumerResponse.setSuccessful(false);
             consumerResponse.setException(e);
         }
         return consumerResponse;
