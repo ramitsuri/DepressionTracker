@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "800787361504",
+    "firebase_url": "https://depressiontracker.firebaseio.com",
+    "project_id": "depressiontracker",
+    "storage_bucket": "depressiontracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800787361504:android:4804a4143cce9782",
+        "android_client_info": {
+          "package_name": "com.ramitsuri.depressiontracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "800787361504-28nannrfmee5mrs02ojs2io4ikcb0oqe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClT9UHnpD_biDTYyRX_4Lkga_kuupykK8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "800787361504-28nannrfmee5mrs02ojs2io4ikcb0oqe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
