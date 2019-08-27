@@ -23,6 +23,7 @@ import com.ramitsuri.depressiontracker.viewModel.HistoryViewModel;
 import com.ramitsuri.depressiontracker.work.BackupWorker;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,8 +32,12 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
 import androidx.work.Data;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import timber.log.Timber;
@@ -152,6 +157,44 @@ public class HistoryFragment extends BaseFragment {
                         }
                     }
                 });
+        scheduleBackup(account);
+    }
+
+    private void scheduleBackup(Account account) {
+        String spreadsheetId =
+                PrefHelper.get(getString(R.string.settings_key_spreadsheet_id), null);
+        String sheetId = PrefHelper.get(getString(R.string.settings_key_sheet_id), null);
+        Data.Builder builder = new Data.Builder();
+        builder.putString(Constants.Work.APP_NAME, getString(R.string.app_name));
+        builder.putString(Constants.Work.ACCOUNT_NAME, account.name);
+        builder.putString(Constants.Work.ACCOUNT_TYPE, account.type);
+        builder.putString(Constants.Work.SPREADSHEET_ID, spreadsheetId);
+        builder.putString(Constants.Work.SHEET_ID, sheetId);
+
+        String workTag = Constants.TAG_SCHEDULED_BACKUP;
+        Constraints myConstraints = new Constraints.Builder()
+                .setRequiresCharging(false)
+                .setRequiredNetworkType(NetworkType.UNMETERED)
+                .build();
+
+        PeriodicWorkRequest.Builder periodicWorkRequestBuilder =
+                new PeriodicWorkRequest.Builder(BackupWorker.class, 12, TimeUnit.HOURS)
+                        .setConstraints(myConstraints)
+                        .addTag(workTag);
+        PeriodicWorkRequest request = periodicWorkRequestBuilder.build();
+        WorkManager.getInstance(MainApplication.getInstance()).enqueueUniquePeriodicWork(workTag,
+                ExistingPeriodicWorkPolicy.KEEP, request);
+
+        WorkManager.getInstance(MainApplication.getInstance()).getWorkInfosByTagLiveData(workTag)
+                .observe(this,
+                        new Observer<List<WorkInfo>>() {
+                            @Override
+                            public void onChanged(List<WorkInfo> workInfos) {
+                                if (workInfos != null && !workInfos.isEmpty()) {
+                                    Timber.i("Work status %s", workInfos.get(0).toString());
+                                }
+                            }
+                        });
     }
 
     @Override
