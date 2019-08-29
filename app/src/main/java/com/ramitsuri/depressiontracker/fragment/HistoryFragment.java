@@ -126,75 +126,45 @@ public class HistoryFragment extends BaseFragment {
     }
 
     private void initiateBackup(Account account) {
-        String spreadsheetId =
-                PrefHelper.get(getString(R.string.settings_key_spreadsheet_id), null);
-        String sheetId = PrefHelper.get(getString(R.string.settings_key_sheet_id), null);
-        Data.Builder builder = new Data.Builder();
-        builder.putString(Constants.Work.APP_NAME, getString(R.string.app_name));
-        builder.putString(Constants.Work.ACCOUNT_NAME, account.name);
-        builder.putString(Constants.Work.ACCOUNT_TYPE, account.type);
-        builder.putString(Constants.Work.SPREADSHEET_ID, spreadsheetId);
-        builder.putString(Constants.Work.SHEET_ID, sheetId);
-
-        OneTimeWorkRequest backupRequest = new OneTimeWorkRequest.Builder(BackupWorker.class)
-                .addTag(Constants.TAG_ONE_TIME_BACKUP)
-                .setInputData(builder.build())
-                .build();
-        WorkManager.getInstance(MainApplication.getInstance()).enqueue(backupRequest);
-        WorkManager.getInstance(MainApplication.getInstance())
-                .getWorkInfoByIdLiveData(backupRequest.getId()).observe(getViewLifecycleOwner(),
-                new Observer<WorkInfo>() {
-                    @Override
-                    public void onChanged(WorkInfo workInfo) {
-                        if (workInfo != null) {
-                            if (workInfo.getState() == WorkInfo.State.SUCCEEDED) {
-                                Timber.i("Backup Success");
-                            } else if (workInfo.getState() == WorkInfo.State.RUNNING) {
-                                Timber.i("Backup Running");
-                            } else if (workInfo.getState() == WorkInfo.State.FAILED) {
-                                Timber.i("Backup Fail");
-                            }
-                        }
-                    }
-                });
-        scheduleBackup(account);
-    }
-
-    private void scheduleBackup(Account account) {
-        String spreadsheetId =
-                PrefHelper.get(getString(R.string.settings_key_spreadsheet_id), null);
-        String sheetId = PrefHelper.get(getString(R.string.settings_key_sheet_id), null);
-        Data.Builder builder = new Data.Builder();
-        builder.putString(Constants.Work.APP_NAME, getString(R.string.app_name));
-        builder.putString(Constants.Work.ACCOUNT_NAME, account.name);
-        builder.putString(Constants.Work.ACCOUNT_TYPE, account.type);
-        builder.putString(Constants.Work.SPREADSHEET_ID, spreadsheetId);
-        builder.putString(Constants.Work.SHEET_ID, sheetId);
-
         String workTag = Constants.TAG_SCHEDULED_BACKUP;
+
+        // Input data
+        String spreadsheetId =
+                PrefHelper.get(getString(R.string.settings_key_spreadsheet_id), null);
+        String sheetId = PrefHelper.get(getString(R.string.settings_key_sheet_id), null);
+        Data.Builder builder = new Data.Builder();
+        builder.putString(Constants.Work.APP_NAME, getString(R.string.app_name));
+        builder.putString(Constants.Work.ACCOUNT_NAME, account.name);
+        builder.putString(Constants.Work.ACCOUNT_TYPE, account.type);
+        builder.putString(Constants.Work.SPREADSHEET_ID, spreadsheetId);
+        builder.putString(Constants.Work.SHEET_ID, sheetId);
         Constraints myConstraints = new Constraints.Builder()
                 .setRequiresCharging(false)
                 .setRequiredNetworkType(NetworkType.UNMETERED)
                 .build();
 
+        // Request
         PeriodicWorkRequest.Builder periodicWorkRequestBuilder =
                 new PeriodicWorkRequest.Builder(BackupWorker.class, 12, TimeUnit.HOURS)
                         .setConstraints(myConstraints)
+                        .setInputData(builder.build())
                         .addTag(workTag);
         PeriodicWorkRequest request = periodicWorkRequestBuilder.build();
-        WorkManager.getInstance(MainApplication.getInstance()).enqueueUniquePeriodicWork(workTag,
-                ExistingPeriodicWorkPolicy.KEEP, request);
 
+        // Enqueue
+        WorkManager.getInstance(MainApplication.getInstance()).enqueueUniquePeriodicWork(workTag,
+                ExistingPeriodicWorkPolicy.REPLACE, request);
+
+        // Status
         WorkManager.getInstance(MainApplication.getInstance()).getWorkInfosByTagLiveData(workTag)
-                .observe(this,
-                        new Observer<List<WorkInfo>>() {
-                            @Override
-                            public void onChanged(List<WorkInfo> workInfos) {
-                                if (workInfos != null && !workInfos.isEmpty()) {
-                                    Timber.i("Work status %s", workInfos.get(0).toString());
-                                }
-                            }
-                        });
+                .observe(this, new Observer<List<WorkInfo>>() {
+                    @Override
+                    public void onChanged(List<WorkInfo> workInfos) {
+                        if (workInfos != null && !workInfos.isEmpty()) {
+                            Timber.i("Work status %s", workInfos.get(0).toString());
+                        }
+                    }
+                });
     }
 
     @Override
