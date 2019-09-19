@@ -8,7 +8,7 @@ import com.ramitsuri.depressiontracker.MainApplication;
 import com.ramitsuri.depressiontracker.constants.Constants;
 import com.ramitsuri.depressiontracker.data.DepressionTrackerDatabase;
 import com.ramitsuri.depressiontracker.entities.Question;
-import com.ramitsuri.depressiontracker.spreadsheet.consumerResponse.InsertConsumerResponse;
+import com.ramitsuri.sheetscore.consumerResponse.InsertConsumerResponse;
 
 import java.util.Arrays;
 import java.util.List;

@@ -8,19 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ramitsuri.depressiontracker.MainApplication;
 import com.ramitsuri.depressiontracker.R;
 import com.ramitsuri.depressiontracker.adapter.HistoryAdapter;
 import com.ramitsuri.depressiontracker.constants.Constants;
-import com.ramitsuri.depressiontracker.google.AccountManager;
-import com.ramitsuri.depressiontracker.google.SignInResponse;
 import com.ramitsuri.depressiontracker.utils.PrefHelper;
 import com.ramitsuri.depressiontracker.viewModel.HistoryViewModel;
 import com.ramitsuri.depressiontracker.work.BackupWorker;
+import com.ramitsuri.sheetscore.googleSignIn.AccountManager;
+import com.ramitsuri.sheetscore.googleSignIn.SignInResponse;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -85,6 +82,8 @@ public class HistoryFragment extends BaseFragment {
         });
 
         setupList(view);
+        String workTag = Constants.TAG_SCHEDULED_BACKUP;
+        logWorkStatus(workTag);
     }
 
     private void setupList(View view) {
@@ -117,7 +116,7 @@ public class HistoryFragment extends BaseFragment {
         SignInResponse response =
                 accountManager.prepareSignIn(MainApplication.getInstance(), Constants.SCOPES);
         if (response.getGoogleSignInAccount() != null) {
-            initiateBackup(response.getGoogleSignInAccount().getAccount());
+            initiateBackup(response.getGoogleSignInAccount().getAccount(), false);
         } else if (response.getGoogleSignInIntent() != null) {
             // request account access
             startActivityForResult(response.getGoogleSignInIntent(),
@@ -125,7 +124,7 @@ public class HistoryFragment extends BaseFragment {
         }
     }
 
-    private void initiateBackup(Account account) {
+    private void initiateBackup(Account account, boolean periodic) {
         String workTag = Constants.TAG_SCHEDULED_BACKUP;
 
         // Input data
@@ -143,19 +142,32 @@ public class HistoryFragment extends BaseFragment {
                 .setRequiredNetworkType(NetworkType.UNMETERED)
                 .build();
 
-        // Request
-        PeriodicWorkRequest.Builder periodicWorkRequestBuilder =
-                new PeriodicWorkRequest.Builder(BackupWorker.class, 12, TimeUnit.HOURS)
-                        .setConstraints(myConstraints)
-                        .setInputData(builder.build())
-                        .addTag(workTag);
-        PeriodicWorkRequest request = periodicWorkRequestBuilder.build();
+        if (periodic) {
+            // Request
+            PeriodicWorkRequest.Builder periodicWorkRequestBuilder =
+                    new PeriodicWorkRequest.Builder(BackupWorker.class, 12, TimeUnit.HOURS)
+                            .setConstraints(myConstraints)
+                            .setInputData(builder.build())
+                            .addTag(workTag);
+            PeriodicWorkRequest request = periodicWorkRequestBuilder.build();
 
-        // Enqueue
-        WorkManager.getInstance(MainApplication.getInstance()).enqueueUniquePeriodicWork(workTag,
-                ExistingPeriodicWorkPolicy.REPLACE, request);
+            // Enqueue
+            WorkManager.getInstance(MainApplication.getInstance())
+                    .enqueueUniquePeriodicWork(workTag,
+                            ExistingPeriodicWorkPolicy.REPLACE, request);
+        } else {
+            OneTimeWorkRequest backupRequest = new OneTimeWorkRequest.Builder(BackupWorker.class)
+                    .addTag(Constants.TAG_ONE_TIME_BACKUP)
+                    .setInputData(builder.build())
+                    .build();
+            WorkManager.getInstance(MainApplication.getInstance()).enqueue(backupRequest);
+        }
 
         // Status
+        logWorkStatus(workTag);
+    }
+
+    private void logWorkStatus(String workTag) {
         WorkManager.getInstance(MainApplication.getInstance()).getWorkInfosByTagLiveData(workTag)
                 .observe(this, new Observer<List<WorkInfo>>() {
                     @Override
@@ -171,10 +183,9 @@ public class HistoryFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.RequestCode.GOOGLE_SIGN_IN) {
-            Task<GoogleSignInAccount> getAccountTask =
-                    GoogleSignIn.getSignedInAccountFromIntent(data);
-            if (getAccountTask.isSuccessful() && getAccountTask.getResult() != null) {
-                initiateBackup(getAccountTask.getResult().getAccount());
+            Account account = AccountManager.getSignInAccountFromIntent(data);
+            if (account != null) {
+                initiateBackup(account, false);
             } else {
                 Timber.i("Sign-in failed.");
             }
