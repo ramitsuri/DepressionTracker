@@ -88,7 +88,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        //questions.add(question);
 
         question = new Question();
         question.setQuestionId(8);
@@ -115,7 +115,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        //questions.add(question);
 
         question = new Question();
         question.setQuestionId(11);
@@ -124,7 +124,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        //questions.add(question);
 
         question = new Question();
         question.setQuestionId(12);
@@ -133,7 +133,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        //questions.add(question);
 
         question = new Question();
         question.setQuestionId(13);
@@ -142,7 +142,7 @@ public class QuestionHelper {
         question.setAnswerType(AnswerType.NO);
         question.setDifficultyType(DifficultyType.NA);
         question.setIsSynced(false);
-        questions.add(question);
+        //questions.add(question);
 
         question = new Question();
         question.setQuestionId(14);
