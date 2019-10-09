@@ -36,16 +36,16 @@ public class BackupWorker extends Worker {
 
         if (appName == null || TextUtils.isEmpty(spreadsheetId) || TextUtils.isEmpty(sheetId) ||
                 TextUtils.isEmpty(accountName) || TextUtils.isEmpty(accountType)) {
-            Timber.i("App Name - %s / Spreadsheet Id - %s / Sheet Id - %s / Account Name - %s / " +
+            Timber.w("App Name - %s / Spreadsheet Id - %s / Sheet Id - %s / Account Name - %s / " +
                             "Account Type - %s null or empty", appName, spreadsheetId, sheetId,
                     accountName, accountType);
-            return Result.failure();
+            return Result.retry();
         }
 
         Account account = new Account(accountName, accountType);
 
         if (MainApplication.getInstance().getSheetRepository() == null) {
-            Timber.i("Sheet repo null");
+            Timber.w("Sheet repo null");
             MainApplication.getInstance()
                     .initSheetRepo(account, spreadsheetId, Arrays.asList(Constants.SCOPES));
         }
@@ -54,8 +54,8 @@ public class BackupWorker extends Worker {
                 DepressionTrackerDatabase.getInstance().questionDao().getAllUnsynced();
 
         if (questionsToBackup == null) {
-            Timber.i("Questions to backup is null");
-            return Result.failure();
+            Timber.w("Questions to backup is null");
+            return Result.retry();
         }
 
         InsertConsumerResponse response = MainApplication.getInstance().getSheetRepository()
